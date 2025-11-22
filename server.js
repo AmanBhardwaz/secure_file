@@ -7,9 +7,10 @@ const path = require("path");
 const app = express();
 
 // === Use environment variables on Render ===
-const CLIENT_ID = process.env.CLIENT_ID;
-const CLIENT_SECRET = process.env.CLIENT_SECRET;
-const CALLBACK_URL = process.env.CALLBACK_URL;
+const CLIENT_ID =
+  "628063343288-g4837n3gv99o9c58t08npqiscep2us88.apps.googleusercontent.com";
+const CLIENT_SECRET = "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";
+const REDIRECT_URI = "https://secure-file-abk9.onrender.com/";
 
 // === Cookie Session ===
 app.use(
@@ -41,7 +42,6 @@ passport.use(
       clientID: CLIENT_ID,
       clientSecret: CLIENT_SECRET,
       callbackURL: CALLBACK_URL,
-        state: true,
     },
     function (accessToken, refreshToken, profile, done) {
       return done(null, profile);
@@ -56,11 +56,7 @@ passport.deserializeUser((user, done) => done(null, user));
 app.use(express.static(path.join(__dirname, "public")));
 
 // Routes
-app.get("/login", passport.authenticate("google", { 
-    scope: ["profile", "email"],
-    state: true 
-}));
-
+app.get("/login", passport.authenticate("google", { scope: ["profile", "email"] }));
 
 app.get(
   "/callback",
