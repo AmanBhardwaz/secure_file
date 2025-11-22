@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - SecureShare</title>
+    <link rel="stylesheet" href="abyssal-glow-theme.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-lock"></i>
+                <span>SecureShare</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#pricing">Pricing</a></li>
+                <li><a href="#help">Help</a></li>
+            </ul>
+            <div class="nav-buttons">
+                <button class="btn-login" id="logoutBtn">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Dashboard Section -->
+    <section class="dashboard">
+        <div class="dashboard-container">
+            <div class="user-profile">
+                <div class="profile-header">
+                    <div class="profile-image-container">
+                        <img id="userPhoto" src="" alt="User Photo" class="profile-image" style="display: none;">
+                    </div>
+                    <div class="profile-info">
+                        <h1>Welcome, <span id="userName">User</span></h1>
+                        <p id="userEmail" class="user-email"></p>
+                    </div>
+                </div>
+                
+                <div class="dashboard-stats">
+                    <div class="stat-card feature-card">
+                        <div class="stat-icon feature-icon">
+                            <i class="fas fa-file-upload"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Files Shared</h3>
+                            <p id="filesShared">0</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card feature-card">
+                        <div class="stat-icon feature-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Secure Transfers</h3>
+                            <p id="secureTransfers">0</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card feature-card">
+                        <div class="stat-icon feature-icon">
+                            <i class="fas fa-cloud-download-alt"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Downloads</h3>
+                            <p id="downloads">0</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="dashboard-actions">
+                <h2>Your Files</h2>
+                <div class="file-upload-section">
+                    <div class="upload-box feature-card">
+                        <i class="fas fa-cloud-upload-alt upload-icon feature-icon"></i>
+                        <h3>Upload Files</h3>
+                        <p>Securely share files with end-to-end encryption</p>
+                        <button class="btn-primary" id="uploadBtn">
+                            <i class="fas fa-plus"></i> Select Files
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="recent-files">
+                    <h3>Recent Files</h3>
+                    <div class="files-list">
+                        <div class="file-item feature-card">
+                            <div class="file-icon feature-icon">
+                                <i class="fas fa-file-pdf"></i>
+                            </div>
+                            <div class="file-info">
+                                <h4>Project_Report.pdf</h4>
+                                <p>2.4 MB • 2 hours ago</p>
+                            </div>
+                            <div class="file-actions">
+                                <button class="btn-secondary-outline">
+                                    <i class="fas fa-download"></i> Download
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="file-item feature-card">
+                            <div class="file-icon feature-icon">
+                                <i class="fas fa-file-image"></i>
+                            </div>
+                            <div class="file-info">
+                                <h4>Vacation_Photos.zip</h4>
+                                <p>15.7 MB • 1 day ago</p>
+                            </div>
+                            <div class="file-actions">
+                                <button class="btn-secondary-outline">
+                                    <i class="fas fa-download"></i> Download
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="file-item feature-card">
+                            <div class="file-icon feature-icon">
+                                <i class="fas fa-file-code"></i>
+                            </div>
+                            <div class="file-info">
+                                <h4>Source_Code.zip</h4>
+                                <p>8.2 MB • 3 days ago</p>
+                            </div>
+                            <div class="file-actions">
+                                <button class="btn-secondary-outline">
+                                    <i class="fas fa-download"></i> Download
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-column">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Resources</h4>
+                <ul>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">API Documentation</a></li>
+                    <li><a href="#">Community</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Cookie Policy</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Connect</h4>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2023 SecureShare. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Fetch user data from the API
+        async function fetchUserData() {
+            try {
+                const response = await fetch('/api/user');
+                const userData = await response.json();
+                
+                if (userData.loggedIn) {
+                    document.getElementById('userName').textContent = userData.name;
+                    document.getElementById('userEmail').textContent = userData.email;
+                    if (userData.photo) {
+                        document.getElementById('userPhoto').src = userData.photo;
+                        document.getElementById('userPhoto').style.display = 'block';
+                    }
+                } else {
+                    // Redirect to login if not authenticated
+                    window.location.href = '/';
+                }
+            } catch (error) {
+                console.error('Error fetching user data:', error);
+            }
+        }
+
+        // Logout functionality
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            window.location.href = '/logout';
+        });
+
+        // Upload button functionality
+        document.getElementById('uploadBtn').addEventListener('click', function() {
+            alert('File upload functionality would be implemented here.');
+        });
+
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            fetchUserData();
+            
+            // Simulate some stats
+            document.getElementById('filesShared').textContent = '12';
+            document.getElementById('secureTransfers').textContent = '8';
+            document.getElementById('downloads').textContent = '24';
+        });
+    </script>
+</body>
+</html>
