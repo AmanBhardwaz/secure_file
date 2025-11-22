@@ -6,22 +6,23 @@ const path = require("path");
 
 const app = express();
 
-// === Use environment variables on Render ===
-const CLIENT_ID =
-  "628063343288-g4837n3gv99o9c58t08npqiscep2us88.apps.googleusercontent.com";
+// ==== HARD-CODED GOOGLE OAUTH CREDENTIALS ====
+const CLIENT_ID = "628063343288-g4837n3gv99o9c58t08npqiscep2us88.apps.googleusercontent.com";
 const CLIENT_SECRET = "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";
-const REDIRECT_URI = "https://secure-file-abk9.onrender.com/";
 
-// === Cookie Session ===
+// ==== Render URL CALLBACK ====
+const CALLBACK_URL = "https://secure-file-abk9.onrender.com/callback";
+
+// ==== Cookie Session ====
 app.use(
   cookieSession({
     name: "session",
     keys: ["randomkey123"],
-    maxAge: 24 * 60 * 60 * 1000,
+    maxAge: 24 * 60 * 60 * 1000, // 1 day
   })
 );
 
-// Fix for cookie-session
+// Fix for cookie-session compatibility
 app.use((req, res, next) => {
   if (req.session && !req.session.regenerate) {
     req.session.regenerate = cb => cb();
@@ -35,13 +36,14 @@ app.use((req, res, next) => {
 app.use(passport.initialize());
 app.use(passport.session());
 
-// === Google OAuth Strategy ===
+// ==== GOOGLE STRATEGY ====
 passport.use(
   new GoogleStrategy(
     {
       clientID: CLIENT_ID,
       clientSecret: CLIENT_SECRET,
       callbackURL: CALLBACK_URL,
+      state: true, // Required for production OAuth
     },
     function (accessToken, refreshToken, profile, done) {
       return done(null, profile);
@@ -52,12 +54,21 @@ passport.use(
 passport.serializeUser((user, done) => done(null, user));
 passport.deserializeUser((user, done) => done(null, user));
 
-// Serve frontend
+// ==== Serve Frontend ====
 app.use(express.static(path.join(__dirname, "public")));
 
-// Routes
-app.get("/login", passport.authenticate("google", { scope: ["profile", "email"] }));
+// ==== ROUTES ====
 
+// Start Google Login
+app.get(
+  "/login",
+  passport.authenticate("google", {
+    scope: ["profile", "email"],
+    state: true, // MUST include for secure OAuth
+  })
+);
+
+// Callback Route
 app.get(
   "/callback",
   passport.authenticate("google", { failureRedirect: "/" }),
@@ -66,6 +77,7 @@ app.get(
   }
 );
 
+// Get Logged In User
 app.get("/api/user", (req, res) => {
   if (!req.user) return res.json({ loggedIn: false });
   res.json({
@@ -76,10 +88,11 @@ app.get("/api/user", (req, res) => {
   });
 });
 
+// Logout
 app.get("/logout", (req, res) => {
   req.logout(() => res.redirect("/"));
 });
 
-// Start server
+// ==== START SERVER ====
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log("Server running on " + PORT));
+app.listen(PORT, () => console.log("Server running on PORT " + PORT));
