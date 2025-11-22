@@ -41,6 +41,7 @@ passport.use(
       clientID: CLIENT_ID,
       clientSecret: CLIENT_SECRET,
       callbackURL: CALLBACK_URL,
+        state: true,
     },
     function (accessToken, refreshToken, profile, done) {
       return done(null, profile);
@@ -55,7 +56,11 @@ passport.deserializeUser((user, done) => done(null, user));
 app.use(express.static(path.join(__dirname, "public")));
 
 // Routes
-app.get("/login", passport.authenticate("google", { scope: ["profile", "email"] }));
+app.get("/login", passport.authenticate("google", { 
+    scope: ["profile", "email"],
+    state: true 
+}));
+
 
 app.get(
   "/callback",
