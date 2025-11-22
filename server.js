@@ -6,22 +6,21 @@ const path = require("path");
 
 const app = express();
 
-// === Google OAuth credentials ===
-const CLIENT_ID =
-  "628063343288-g4837n3gv99o9c58t08npqiscep2us88.apps.googleusercontent.com";
-const CLIENT_SECRET = "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";
-const REDIRECT_URI = "http://localhost:5000/callback";
+// === Use environment variables on Render ===
+const CLIENT_ID = process.env.CLIENT_ID;
+const CLIENT_SECRET = process.env.CLIENT_SECRET;
+const CALLBACK_URL = process.env.CALLBACK_URL;
 
-// === Cookie Session Middleware ===
+// === Cookie Session ===
 app.use(
   cookieSession({
     name: "session",
-    keys: ["randomkey123"], // replace with strong secret key
-    maxAge: 24 * 60 * 60 * 1000, // 1 day
+    keys: ["randomkey123"],
+    maxAge: 24 * 60 * 60 * 1000,
   })
 );
 
-// === Patch for cookie-session (so Passport works fine) ===
+// Fix for cookie-session
 app.use((req, res, next) => {
   if (req.session && !req.session.regenerate) {
     req.session.regenerate = cb => cb();
@@ -32,7 +31,6 @@ app.use((req, res, next) => {
   next();
 });
 
-// === Initialize Passport ===
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -42,7 +40,7 @@ passport.use(
     {
       clientID: CLIENT_ID,
       clientSecret: CLIENT_SECRET,
-      callbackURL: REDIRECT_URI,
+      callbackURL: CALLBACK_URL,
     },
     function (accessToken, refreshToken, profile, done) {
       return done(null, profile);
@@ -53,24 +51,20 @@ passport.use(
 passport.serializeUser((user, done) => done(null, user));
 passport.deserializeUser((user, done) => done(null, user));
 
-// === Serve Frontend ===
+// Serve frontend
 app.use(express.static(path.join(__dirname, "public")));
 
-// === Routes ===
-
-// Start Google login
+// Routes
 app.get("/login", passport.authenticate("google", { scope: ["profile", "email"] }));
 
-// Callback after Google login
 app.get(
   "/callback",
   passport.authenticate("google", { failureRedirect: "/" }),
   (req, res) => {
-    res.redirect("/dashboard.html"); // redirect to frontend profile page
+    res.redirect("/dashboard.html");
   }
 );
 
-// API to get logged-in user
 app.get("/api/user", (req, res) => {
   if (!req.user) return res.json({ loggedIn: false });
   res.json({
@@ -81,10 +75,10 @@ app.get("/api/user", (req, res) => {
   });
 });
 
-// Logout
 app.get("/logout", (req, res) => {
   req.logout(() => res.redirect("/"));
 });
 
-// === Start Server ===
-app.listen(5000, () => console.log("✅ Server running at http://localhost:5000"));
+// Start server
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log("Server running on " + PORT));
